@@ -11,19 +11,31 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.iotstar.util.Constant;
 
-@WebServlet(urlPatterns = {"/logout"})
+@WebServlet(urlPatterns = "/logout")
 public class LogoutController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        session.invalidate(); // Xóa session
-        
-        Cookie cookie = new Cookie(Constant.COOKIE_REMEMBER, "");
-        cookie.setMaxAge(0); // Xóa cookie
-        resp.addCookie(cookie);
-        
+        // 1. Xóa Session hiện tại
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        // 2. Xóa Cookie "Nhớ mật khẩu" (nếu có)
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (Constant.COOKIE_REMEMBER.equals(cookie.getName())) {
+                    cookie.setMaxAge(0);
+                    resp.addCookie(cookie);
+                    break;
+                }
+            }
+        }
+
+        // 3. Chuyển về trang đăng nhập
         resp.sendRedirect(req.getContextPath() + "/login");
     }
 }

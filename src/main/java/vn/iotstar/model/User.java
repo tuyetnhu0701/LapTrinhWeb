@@ -46,6 +46,10 @@ public class User implements Serializable {
     @Column(name = "createdDate")
     private Date createdDate;
 
+    // 1: Đã kích hoạt, 0: Chưa kích hoạt (mặc định là 1 cho tài khoản cũ)
+    @Column(name = "status", columnDefinition = "int default 1")
+    private Integer status = 1;
+
     public User() {}
 
     public User(String email, String userName, String fullName, String passWord, String avatar, int roleid, String phone, Date createdDate) {
@@ -57,6 +61,7 @@ public class User implements Serializable {
         this.roleid = roleid;
         this.phone = phone;
         this.createdDate = createdDate;
+        this.status = 1;
     }
 
     public int getId() { return id; }
@@ -77,4 +82,6 @@ public class User implements Serializable {
     public void setPhone(String phone) { this.phone = phone; }
     public Date getCreatedDate() { return createdDate; }
     public void setCreatedDate(Date createdDate) { this.createdDate = createdDate; }
+    public Integer getStatus() { return status == null ? 1 : status; }
+    public void setStatus(Integer status) { this.status = status; }
 }

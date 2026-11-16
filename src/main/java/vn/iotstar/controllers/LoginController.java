@@ -14,10 +14,9 @@ import vn.iotstar.service.UserService;
 import vn.iotstar.service.impl.UserServiceImpl;
 import vn.iotstar.util.Constant;
 
-@WebServlet(urlPatterns = {"/login"})
+@WebServlet(urlPatterns = "/login")
 public class LoginController extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    UserService service = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,47 +25,46 @@ public class LoginController extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/waiting");
             return;
         }
-        // Check cookie
-        Cookie[] cookies = req.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(Constant.COOKIE_REMEMBER)) {
-                    session = req.getSession(true);
-                    session.setAttribute(Constant.SESSION_USERNAME, cookie.getValue());
-                    resp.sendRedirect(req.getContextPath() + "/waiting");
-                    return;
-                }
-            }
-        }
         req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("UTF-8");
-        resp.setCharacterEncoding("UTF-8");
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-        boolean isRememberMe = "on".equals(req.getParameter("remember"));
+        String remember = req.getParameter("remember");
 
-        if (username.isEmpty() || password.isEmpty()) {
-            req.setAttribute("alert", "Tài khoản hoặc mật khẩu không được rỗng");
+        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+            req.setAttribute("alert", "Tài khoản hoặc mật khẩu không được để trống!");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
             return;
         }
 
+        UserService service = new UserServiceImpl();
         User user = service.login(username, password);
+
         if (user != null) {
+            // Kiểm tra trạng thái kích hoạt OTP
+            if (user.getStatus() != null && user.getStatus() == 0) {
+                req.setAttribute("alert", "Tài khoản của bạn chưa được kích hoạt bằng mã OTP!");
+                req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
+                return;
+            }
+
             HttpSession session = req.getSession(true);
             session.setAttribute("account", user);
-            if (isRememberMe) {
+
+            if ("on".equals(remember)) {
                 Cookie cookie = new Cookie(Constant.COOKIE_REMEMBER, username);
                 cookie.setMaxAge(30 * 60);
                 resp.addCookie(cookie);
             }
             resp.sendRedirect(req.getContextPath() + "/waiting");
         } else {
-            req.setAttribute("alert", "Tài khoản hoặc mật khẩu không đúng");
+            req.setAttribute("alert", "Tài khoản hoặc mật khẩu không đúng!");
             req.getRequestDispatcher("/views/login.jsp").forward(req, resp);
         }
     }

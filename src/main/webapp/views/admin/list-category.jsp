@@ -25,7 +25,10 @@
         <h3 class="m-0">Dashboard</h3>
         <div>
             <span>Xin chào Quản trị viên</span> | 
-            <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none bg-danger px-2 py-1 rounded">Đăng xuất</a>
+            <!-- Đã thêm sự kiện onclick xác nhận đăng xuất vào thẻ a bên dưới -->
+            <a href="${pageContext.request.contextPath}/logout" 
+               class="text-white text-decoration-none bg-danger px-2 py-1 rounded"
+               onclick="return confirm('Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?');">Đăng xuất</a>
         </div>
     </div>
 

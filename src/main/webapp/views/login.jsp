@@ -1,50 +1,73 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Đăng Nhập - ShoppingMVC</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        body { background-color: #f4f6f9; display: flex; align-items: center; justify-content: center; height: 100vh; }
-        .login-card { width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: white; }
-    </style>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
 </head>
-<body>
-    <div class="login-card">
-        <h3 class="text-center text-primary mb-4"><i class="fas fa-user-circle"></i> Đăng Nhập</h3>
-        
-        <c:if test="${not empty alert}">
-            <div class="alert alert-danger p-2 text-center" role="alert">${alert}</div>
-        </c:if>
-        
-        <form action="${pageContext.request.contextPath}/login" method="post">
-            <div class="mb-3">
-                <label class="form-label text-muted fw-bold">Tài khoản</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-user text-primary"></i></span>
-                    <input type="text" name="username" class="form-control" required placeholder="Nhập admin hoặc user">
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white text-center py-3">
+                        <h4 class="mb-0 fw-bold">ĐĂNG NHẬP HỆ THỐNG</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        <c:if test="${alert != null}">
+                            <div class="alert alert-danger">${alert}</div>
+                        </c:if>
+                        <c:if test="${message != null}">
+                            <div class="alert alert-success">${message}</div>
+                        </c:if>
+
+                        <form action="${pageContext.request.contextPath}/login" method="post">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Tài khoản (Username)</label>
+                                <input type="text" name="username" class="form-control" placeholder="Nhập tài khoản" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Mật khẩu</label>
+                                <div class="input-group">
+                                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" required>
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('loginPassword', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" name="remember" class="form-check-input" id="remember">
+                                    <label class="form-check-label" for="remember">Nhớ mật khẩu</label>
+                                </div>
+                                <a href="${pageContext.request.contextPath}/forgot-password" class="text-decoration-none">Quên mật khẩu?</a>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Đăng nhập</button>
+                        </form>
+                        <div class="text-center mt-3">
+                            Chưa có tài khoản? <a href="${pageContext.request.contextPath}/register" class="text-decoration-none fw-semibold">Đăng ký ngay</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <label class="form-label text-muted fw-bold">Mật khẩu</label>
-                <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="fas fa-lock text-primary"></i></span>
-                    <input type="password" name="password" class="form-control" required placeholder="Nhập mật khẩu">
-                </div>
-            </div>
-            <div class="mb-4 form-check">
-                <input type="checkbox" name="remember" class="form-check-input" id="rememberMe">
-                <label class="form-check-label text-muted" for="rememberMe">Nhớ phiên đăng nhập</label>
-            </div>
-            <button type="submit" class="btn btn-primary w-100 fw-bold mb-3">Đăng nhập</button>
-        </form>
-        
-        <div class="text-center mt-3">
-            <span class="text-muted">Chưa có tài khoản?</span> 
-            <a href="${pageContext.request.contextPath}/register" class="text-decoration-none fw-bold">Đăng ký ngay</a>
         </div>
     </div>
+
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("bi-eye", "bi-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("bi-eye-slash", "bi-eye");
+            }
+        }
+    </script>
 </body>
 </html>
