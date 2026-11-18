@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import vn.iotstar.model.User;
 
-@WebServlet(urlPatterns = {"/waiting", "", "/home"})
+@WebServlet(urlPatterns = {"/waiting", ""})
 public class WaitingController extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -22,8 +22,8 @@ public class WaitingController extends HttpServlet {
             if (u.getRoleid() == 1) { // 1 là Admin
                 resp.sendRedirect(req.getContextPath() + "/admin/category/list");
             } else {
-                req.setAttribute("username", u.getUserName());
-                req.getRequestDispatcher("/views/home.jsp").forward(req, resp); // Trang chủ cho user thường
+                // BƯỚC 2: Chuyển hướng sang HomeController để nó chạy lệnh gọi 10 video từ Database
+                resp.sendRedirect(req.getContextPath() + "/home");
             }
         } else {
             resp.sendRedirect(req.getContextPath() + "/login");

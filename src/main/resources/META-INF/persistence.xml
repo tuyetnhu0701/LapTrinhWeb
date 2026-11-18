@@ -6,6 +6,7 @@
     <persistence-unit name="jpa-hibernate-sqlserver">
         <class>vn.iotstar.model.User</class>
         <class>vn.iotstar.model.Category</class>
+        <class>vn.iotstar.model.Video</class>
         <properties>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true;databaseName=ShoppingServiceMVC" />
             <property name="jakarta.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
