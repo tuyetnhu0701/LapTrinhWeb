@@ -24,18 +24,20 @@
                             <div class="alert alert-success">${message}</div>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/login" method="post">
+                        <form action="${pageContext.request.contextPath}/login" method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Tài khoản (Username)</label>
-                                <input type="text" name="username" class="form-control" placeholder="Nhập tài khoản" required>
+                                <input type="text" name="username" class="form-control" placeholder="Nhập tài khoản" required minlength="3">
+                                <div class="invalid-feedback">Vui lòng nhập tài khoản (ít nhất 3 ký tự).</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Mật khẩu</label>
-                                <div class="input-group">
-                                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" required>
+                                <div class="input-group has-validation">
+                                    <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu" required minlength="3">
                                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('loginPassword', this)">
                                         <i class="bi bi-eye"></i>
                                     </button>
+                                    <div class="invalid-feedback">Vui lòng nhập mật khẩu (ít nhất 3 ký tự).</div>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -68,6 +70,19 @@
                 icon.classList.replace("bi-eye-slash", "bi-eye");
             }
         }
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
     </script>
 </body>
 </html>

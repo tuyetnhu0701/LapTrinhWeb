@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <mapping path="/*" decorator="web.jsp"/>
+
+    <mapping path="/WEB-INF/decorators/*" exclude="true"/>
+    <mapping path="/assets/*" exclude="true"/>
+    <mapping path="/images/*" exclude="true"/>
+    <mapping path="/uploads/*" exclude="true"/>
+</sitemesh>

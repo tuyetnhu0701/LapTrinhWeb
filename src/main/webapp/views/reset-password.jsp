@@ -21,23 +21,25 @@
                             <div class="alert alert-danger">${alert}</div>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/reset-password" method="post">
+                        <form action="${pageContext.request.contextPath}/reset-password" method="post" class="needs-validation" id="resetForm" novalidate>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Mật khẩu mới</label>
-                                <div class="input-group">
-                                    <input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="Nhập mật khẩu mới" required>
+                                <div class="input-group has-validation">
+                                    <input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="Nhập mật khẩu mới" required minlength="6">
                                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('newPassword', this)">
                                         <i class="bi bi-eye"></i>
                                     </button>
+                                    <div class="invalid-feedback">Mật khẩu mới phải có ít nhất 6 ký tự.</div>
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Nhập lại mật khẩu mới</label>
-                                <div class="input-group">
+                                <div class="input-group has-validation">
                                     <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Xác nhận mật khẩu mới" required>
                                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword', this)">
                                         <i class="bi bi-eye"></i>
                                     </button>
+                                    <div class="invalid-feedback">Mật khẩu xác nhận không khớp với mật khẩu mới.</div>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Cập nhật mật khẩu</button>
@@ -60,6 +62,33 @@
                 icon.classList.replace("bi-eye-slash", "bi-eye");
             }
         }
+
+        (() => {
+            'use strict';
+            const form = document.getElementById('resetForm');
+            const newPass = document.getElementById('newPassword');
+            const confirmPass = document.getElementById('confirmPassword');
+
+            const validateMatch = () => {
+                if (confirmPass.value !== newPass.value) {
+                    confirmPass.setCustomValidity("Mật khẩu không khớp");
+                } else {
+                    confirmPass.setCustomValidity("");
+                }
+            };
+
+            newPass.addEventListener('input', validateMatch);
+            confirmPass.addEventListener('input', validateMatch);
+
+            form.addEventListener('submit', event => {
+                validateMatch();
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        })();
     </script>
 </body>
 </html>

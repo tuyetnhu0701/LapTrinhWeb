@@ -21,30 +21,35 @@
                             <div class="alert alert-danger">${alert}</div>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/register" method="post">
+                        <form action="${pageContext.request.contextPath}/register" method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Tài khoản (Username)</label>
-                                <input type="text" name="username" class="form-control" required>
+                                <input type="text" name="username" class="form-control" required minlength="3">
+                                <div class="invalid-feedback">Tài khoản phải có ít nhất 3 ký tự.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Họ và tên</label>
-                                <input type="text" name="fullname" class="form-control" required>
+                                <input type="text" name="fullname" class="form-control" required minlength="2">
+                                <div class="invalid-feedback">Vui lòng nhập họ và tên hợp lệ.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Email (Nhận mã OTP)</label>
                                 <input type="email" name="email" class="form-control" required>
+                                <div class="invalid-feedback">Vui lòng nhập đúng định dạng email (vd: abc@gmail.com).</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Số điện thoại</label>
-                                <input type="text" name="phone" class="form-control" required>
+                                <input type="tel" name="phone" class="form-control" pattern="0[0-9]{9}" required>
+                                <div class="invalid-feedback">Số điện thoại phải gồm 10 chữ số và bắt đầu bằng số 0.</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Mật khẩu</label>
-                                <div class="input-group">
-                                    <input type="password" name="password" id="regPassword" class="form-control" required>
+                                <div class="input-group has-validation">
+                                    <input type="password" name="password" id="regPassword" class="form-control" required minlength="6">
                                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('regPassword', this)">
                                         <i class="bi bi-eye"></i>
                                     </button>
+                                    <div class="invalid-feedback">Mật khẩu phải có ít nhất 6 ký tự.</div>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Đăng ký</button>
@@ -70,6 +75,19 @@
                 icon.classList.replace("bi-eye-slash", "bi-eye");
             }
         }
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
     </script>
 </body>
 </html>

@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- THANH MENU -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand fw-bold text-warning" href="${pageContext.request.contextPath}/home">🛍️ SHOPPING MVC</a>
@@ -29,21 +28,19 @@
                         <h4 class="mb-0">Chỉnh Sửa Video</h4>
                     </div>
                     <div class="card-body">
-                        <!-- BẮT BUỘC CÓ ENCTYPE ĐỂ UPLOAD FILE -->
-                        <form action="${pageContext.request.contextPath}/video/update" method="post" enctype="multipart/form-data">
-                            <!-- Trường ẩn chứa ID video để hệ thống biết đang sửa video nào -->
+                        <form action="${pageContext.request.contextPath}/video/update" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                             <input type="hidden" name="videoId" value="${vid.videoId}">
 
                             <div class="mb-3">
                                 <label class="form-label">Tiêu đề Video</label>
-                                <input type="text" class="form-control" name="title" value="${vid.title}" required>
+                                <input type="text" class="form-control" name="title" value="${vid.title}" required minlength="5" maxlength="200">
+                                <div class="invalid-feedback">Vui lòng nhập tiêu đề video (từ 5 đến 200 ký tự).</div>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label">Ảnh bìa (Poster) mới</label>
                                 <input type="file" class="form-control" name="poster" accept="image/*">
                                 <small class="text-muted">Bỏ trống nếu muốn giữ nguyên ảnh cũ.</small>
-                                <!-- Hiện ảnh cũ -->
                                 <div class="mt-2">
                                     <img src="${pageContext.request.contextPath}/media?fname=${vid.poster}" width="150" class="img-thumbnail" alt="Ảnh hiện tại">
                                 </div>
@@ -58,7 +55,8 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Nội dung mô tả</label>
-                                <textarea class="form-control" name="description" rows="4">${vid.description}</textarea>
+                                <textarea class="form-control" name="description" rows="4" required minlength="10">${vid.description}</textarea>
+                                <div class="invalid-feedback">Vui lòng nhập nội dung mô tả (ít nhất 10 ký tự).</div>
                             </div>
 
                             <div class="mb-3 form-check">
@@ -76,5 +74,21 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>

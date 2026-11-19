@@ -24,7 +24,6 @@
         </div>
     </div>
     <div class="row g-0">
-        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <div class="text-center mb-4">
                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="rounded-circle bg-light p-1" width="80" alt="Admin">
@@ -34,18 +33,19 @@
             <a href="${pageContext.request.contextPath}/admin/category/list" class="active"><i class="fas fa-folder me-2"></i> Quản lý Danh mục</a>
         </div>
         
-        <!-- Main Form -->
         <div class="col-md-10 p-4">
             <div class="card-form mx-auto mt-4">
                 <h4 class="mb-4 text-success"><i class="fas fa-plus-circle"></i> Thêm Danh Mục Mới</h4>
-                <form action="${pageContext.request.contextPath}/admin/category/add" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/admin/category/add" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Tên danh mục</label>
-                        <input type="text" name="catename" class="form-control" required placeholder="Nhập tên (VD: Giày thể thao)">
+                        <input type="text" name="catename" class="form-control" required minlength="2" maxlength="100" placeholder="Nhập tên (VD: Giày thể thao)">
+                        <div class="invalid-feedback">Vui lòng nhập tên danh mục (từ 2 đến 100 ký tự).</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Ảnh đại diện</label>
-                        <input type="file" name="icon" class="form-control" accept="image/*">
+                        <input type="file" name="icon" class="form-control" accept="image/*" required>
+                        <div class="invalid-feedback">Vui lòng chọn ảnh đại diện cho danh mục.</div>
                     </div>
                     <button type="submit" class="btn btn-success fw-bold"><i class="fas fa-save"></i> Lưu thông tin</button>
                     <a href="${pageContext.request.contextPath}/admin/category/list" class="btn btn-secondary ms-2 fw-bold"><i class="fas fa-arrow-left"></i> Quay lại</a>
@@ -54,5 +54,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
 </body>
 </html>

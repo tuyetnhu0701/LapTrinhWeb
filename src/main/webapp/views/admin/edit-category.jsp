@@ -25,7 +25,6 @@
         </div>
     </div>
     <div class="row g-0">
-        <!-- Sidebar -->
         <div class="col-md-2 sidebar">
             <div class="text-center mb-4">
                 <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="rounded-circle bg-light p-1" width="80" alt="Admin">
@@ -35,16 +34,16 @@
             <a href="${pageContext.request.contextPath}/admin/category/list" class="active"><i class="fas fa-folder me-2"></i> Quản lý Danh mục</a>
         </div>
         
-        <!-- Main Form -->
         <div class="col-md-10 p-4">
             <div class="card-form mx-auto mt-4">
                 <h4 class="mb-4 text-primary"><i class="fas fa-edit"></i> Chỉnh Sửa Danh Mục</h4>
-                <form action="${pageContext.request.contextPath}/admin/category/edit" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/admin/category/edit" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                     <input type="hidden" name="cateid" value="${category.id}">
                     
                     <div class="mb-3">
                         <label class="form-label fw-bold">Tên danh mục</label>
-                        <input type="text" name="catename" value="${category.name}" class="form-control" required>
+                        <input type="text" name="catename" value="${category.name}" class="form-control" required minlength="2" maxlength="100">
+                        <div class="invalid-feedback">Vui lòng nhập tên danh mục (từ 2 đến 100 ký tự).</div>
                     </div>
                     
                     <div class="mb-3 p-3 bg-light border rounded text-center">
@@ -65,5 +64,21 @@
         </div>
     </div>
 </div>
+
+<script>
+    (() => {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
 </body>
 </html>

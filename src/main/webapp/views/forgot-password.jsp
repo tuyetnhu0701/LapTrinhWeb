@@ -22,10 +22,11 @@
                             <div class="alert alert-danger">${alert}</div>
                         </c:if>
 
-                        <form action="${pageContext.request.contextPath}/forgot-password" method="post">
+                        <form action="${pageContext.request.contextPath}/forgot-password" method="post" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">Email của bạn</label>
                                 <input type="email" name="email" class="form-control" placeholder="example@gmail.com" required>
+                                <div class="invalid-feedback">Vui lòng nhập địa chỉ email hợp lệ.</div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Gửi mã OTP</button>
                         </form>
@@ -37,5 +38,21 @@
             </div>
         </div>
     </div>
+
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>

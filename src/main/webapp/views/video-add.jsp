@@ -19,7 +19,7 @@
         </div>
     </nav>
 
-    <div class="container mt-5">
+    <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow">
@@ -27,42 +27,38 @@
                         <h4 class="mb-0">Đăng Video Review Mới</h4>
                     </div>
                     <div class="card-body">
-                        <!-- YÊU CẦU 4.5: FORM MULTIPART -->
-                        <form action="${pageContext.request.contextPath}/video/insert" method="post" enctype="multipart/form-data">
-                            
-                            <!-- Tiêu đề -->
+                        <form action="${pageContext.request.contextPath}/video/insert" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">Tiêu đề Video</label>
-                                <input type="text" class="form-control" name="title" required placeholder="Nhập tiêu đề video...">
+                                <input type="text" class="form-control" name="title" required minlength="5" maxlength="200" placeholder="Nhập tiêu đề video...">
+                                <div class="invalid-feedback">Vui lòng nhập tiêu đề video (từ 5 đến 200 ký tự).</div>
                             </div>
 
-                            <!-- Ảnh bìa (Poster) -->
                             <div class="mb-3">
                                 <label class="form-label">Ảnh bìa (Poster)</label>
                                 <input type="file" class="form-control" name="poster" accept="image/*" required>
+                                <div class="invalid-feedback">Vui lòng chọn ảnh bìa cho video.</div>
                                 <small class="text-muted">Chọn ảnh định dạng JPG, PNG...</small>
                             </div>
 
-                            <!-- File Video -->
                             <div class="mb-3">
                                 <label class="form-label">File Video (.mp4)</label>
                                 <input type="file" class="form-control" name="videoUrl" accept="video/mp4" required>
+                                <div class="invalid-feedback">Vui lòng chọn file video định dạng .mp4.</div>
                                 <small class="text-danger">Lưu ý: Dung lượng video tối đa 50MB.</small>
                             </div>
 
-                            <!-- Mô tả -->
                             <div class="mb-3">
                                 <label class="form-label">Nội dung mô tả</label>
-                                <textarea class="form-control" name="description" rows="4" placeholder="Nhập mô tả cho set đồ của bạn..."></textarea>
+                                <textarea class="form-control" name="description" rows="4" required minlength="10" placeholder="Nhập mô tả cho set đồ của bạn..."></textarea>
+                                <div class="invalid-feedback">Vui lòng nhập nội dung mô tả (ít nhất 10 ký tự).</div>
                             </div>
 
-                            <!-- Trạng thái -->
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" name="active" id="activeCheck" checked>
                                 <label class="form-check-label" for="activeCheck">Công khai video này</label>
                             </div>
 
-                            <!-- Nút Submit -->
                             <div class="text-end">
                                 <a href="${pageContext.request.contextPath}/video" class="btn btn-secondary">Hủy bỏ</a>
                                 <button type="submit" class="btn btn-success">Tải Video Lên</button>
@@ -74,5 +70,20 @@
         </div>
     </div>
 
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>
