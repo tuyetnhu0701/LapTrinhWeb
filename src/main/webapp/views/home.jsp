@@ -21,6 +21,22 @@
                 </a>
                 
                 <span class="me-3">Xin chào, <b>${sessionScope.account.fullName}</b> (${sessionScope.account.userName})</span>
+                <!-- Nút Hồ sơ cá nhân  -->
+                <a href="${pageContext.request.contextPath}/profile"
+                   class="btn btn-light btn-sm fw-semibold text-primary me-2 d-inline-flex align-items-center rounded-pill px-3 shadow-sm">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.account.avatar}">
+                            <img src="${sessionScope.account.avatar}" alt="Avatar"
+                                 class="rounded-circle me-2 border border-primary"
+                                 style="width: 22px; height: 22px; object-fit: cover;">
+                        </c:when>
+                        <c:otherwise>
+                            <i class="bi bi-person-circle me-1"></i>
+                        </c:otherwise>
+                    </c:choose>
+                    Hồ sơ
+                </a>
+
                 <a href="${pageContext.request.contextPath}/logout" 
                    class="btn btn-danger btn-sm fw-semibold"
                    onclick="return confirm('Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?');">
